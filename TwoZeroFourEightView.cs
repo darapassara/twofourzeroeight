@@ -46,10 +46,10 @@ namespace twozerofoureight
             switch (i)
             {
                 case 0:
-                    l.BackColor = Color.GreenYellow;
+                    l.BackColor = Color.Gray;
                     break;
                 case 2:
-                    l.BackColor = Color.Black;
+                    l.BackColor = Color.Yellow;
                     break;
                 case 4:
                     l.BackColor = Color.Orange;
@@ -58,7 +58,9 @@ namespace twozerofoureight
                     l.BackColor = Color.Red;
                     break;
                 case 16:
-                    l.BackColor = Color.LightGreen;
+                    l.BackColor = Color.BlueViolet;
+                    break;
+
                 default:
                     l.BackColor = Color.Green;
                     break;
