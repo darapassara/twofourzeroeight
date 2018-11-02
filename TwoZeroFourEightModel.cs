@@ -12,6 +12,7 @@ namespace twozerofoureight
         protected int[,] board;
         protected Random rand;
         protected int[] range;
+        int s1 = 0;
 
         public TwoZeroFourEightModel() : this(4)
         {
@@ -69,6 +70,8 @@ namespace twozerofoureight
                     {
                         // merge
                         buffer[pos - 1] *= 2;
+                        //GetScore(buffer[pos-1]);
+
                         buffer[k] = 0;
                         lastMergedSlot = pos - 1;
                         changed = true;
@@ -192,5 +195,101 @@ namespace twozerofoureight
             }
             HandleChanges(changed);
         }
+        
+        public bool GameFull()
+        {
+            bool isGameOver = false;
+            int count = 0;
+            int tmp_count = 0;
+            //Check left
+            foreach (int i in range)
+            {
+                int[] buffer = new int[boardSize];
+                foreach (int j in range)
+                {
+                    buffer[j] = board[i, j];
+                }
+                if (!ShiftAndMerge(buffer))
+                {
+                    tmp_count++;
+                }
+                if (tmp_count == 4)
+                {
+                    count++;
+                }
+            }
+            tmp_count = 0;
+            //Check rigth
+            foreach (int i in range)
+            {
+                int[] buffer = new int[boardSize];
+                foreach (int j in range)
+                {
+                    buffer[boardSize - j - 1] = board[i, j];
+                }
+                if (!ShiftAndMerge(buffer))
+                {
+                    tmp_count++;
+                }
+                if (tmp_count == 4)
+                {
+                    count++;
+                }
+            }
+            tmp_count = 0;
+            //Check up
+            foreach (int i in range)
+            {
+                int[] buffer = new int[boardSize];
+                foreach (int j in range)
+                {
+                    buffer[j] = board[j, i];
+                }
+                if (!ShiftAndMerge(buffer))
+                {
+                    tmp_count++;
+                }
+                if (tmp_count == 4)
+                {
+                    count++;
+                }
+            }
+            //Check down
+            tmp_count = 0;
+            foreach (int i in range)
+            {
+                int[] buffer = new int[boardSize];
+                foreach (int j in range)
+                {
+                    buffer[boardSize - j - 1] = board[j, i];
+                }
+                if (!ShiftAndMerge(buffer))
+                {
+                    tmp_count++;
+                }
+                if (tmp_count == 4)
+                {
+                    count++;
+                }
+            }
+            if (count == 4)
+            {
+                isGameOver = true;
+            }
+            return isGameOver;
+        }
+        public int GetScore() 
+        {
+            int score = 0;
+            for (int i = 0; i < boardSize; i++)
+            {
+                for (int j = 0; j < boardSize; j++)
+                {
+                    score += board[i, j];
+                }
+            }
+            return score;
+        }
+        
     }
 }

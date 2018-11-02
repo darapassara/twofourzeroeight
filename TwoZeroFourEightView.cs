@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Input;
+using System.Threading;
 
 namespace twozerofoureight
 {
@@ -28,6 +30,7 @@ namespace twozerofoureight
         public void Notify(Model m)
         {
             UpdateBoard(((TwoZeroFourEightModel)m).GetBoard());
+            UpdateGameFull(((TwoZeroFourEightModel)m).GameFull());
         }
 
         private void UpdateTile(Label l, int i)
@@ -43,10 +46,10 @@ namespace twozerofoureight
             switch (i)
             {
                 case 0:
-                    l.BackColor = Color.Gray;
+                    l.BackColor = Color.GreenYellow;
                     break;
                 case 2:
-                    l.BackColor = Color.DarkGray;
+                    l.BackColor = Color.Black;
                     break;
                 case 4:
                     l.BackColor = Color.Orange;
@@ -54,6 +57,8 @@ namespace twozerofoureight
                 case 8:
                     l.BackColor = Color.Red;
                     break;
+                case 16:
+                    l.BackColor = Color.LightGreen;
                 default:
                     l.BackColor = Color.Green;
                     break;
@@ -77,8 +82,20 @@ namespace twozerofoureight
             UpdateTile(lbl31, board[3, 1]);
             UpdateTile(lbl32, board[3, 2]);
             UpdateTile(lbl33, board[3, 3]);
+            label1.Text = Convert.ToString(((TwoZeroFourEightModel)model).GetScore());
         }
 
+        private void UpdateGameFull(bool isFull)
+        {
+            if (isFull)
+            {
+                MessageBox.Show( "Game Over");
+            }
+            else
+            {
+                label2.Text = "";
+            }
+        }
         private void btnLeft_Click(object sender, EventArgs e)
         {
             controller.ActionPerformed(TwoZeroFourEightController.LEFT);
@@ -97,6 +114,31 @@ namespace twozerofoureight
         private void btnDown_Click(object sender, EventArgs e)
         {
             controller.ActionPerformed(TwoZeroFourEightController.DOWN);
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Right)
+            {
+                controller.ActionPerformed(TwoZeroFourEightController.RIGHT);
+                return true;
+            }
+            if (keyData == Keys.Left)
+            {
+                controller.ActionPerformed(TwoZeroFourEightController.LEFT);
+                return true;
+            }
+            if (keyData == Keys.Up)
+            {
+                controller.ActionPerformed(TwoZeroFourEightController.UP);
+                return true;
+            }
+            if (keyData == Keys.Down)
+            {
+                controller.ActionPerformed(TwoZeroFourEightController.DOWN);
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
     }
